@@ -8,7 +8,7 @@ import com.study.springboot.bean.Config;
 import com.study.springboot.bean.Member;
 import com.study.springboot.bean.Printer;
 
-//@SpringBootApplication
+//@SpringBootApplication0
 public class Ex02JavaCodeDiApplication {
 
 	public static void main(String[] args) {
@@ -18,7 +18,7 @@ public class Ex02JavaCodeDiApplication {
 		ApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
 		
 		// 2. Member Bean 가져오기
-		Member member1 = (Member)context.getBean("member1");
+		Member member1 = (Member)context.getBean("member1"); // 객체생성 및 추출하여 주입
 		member1.print();
 		
 		// 3. Member Bean 가져오기
