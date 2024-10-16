@@ -1,7 +1,9 @@
 package com.study.springboot;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,12 +41,89 @@ public class MyController {
 		list.add("test2");
 		list.add("test3");
 		
-		mv.addObject("lists", list);
-		mv.addObject("ObjectTest", "테스트입니다");
-		mv.addObject("name","홍길동");
+		Set<String> set = new HashSet<>();
+		set.add("set-test1");
+		set.add("set-test2");
+		set.add("set-test3");
+		
+		mv.addObject("sets", set); // Set -> Object
+		
+		mv.addObject("lists", list);	// list -> Object
+		mv.addObject("ObjectTest", "테스트입니다");	
+		mv.addObject("name","홍길동");	// String -> Object
+		
 		mv.setViewName("view/MyView");
 		
 		return mv;
-
 	}
+	
+	// 스프링 - ModelAndView객체를 이용한 페이지이동과 객체 전달
+	@GetMapping("/mv2")
+	public ModelAndView test4(Model model) {
+		ModelAndView mv = new ModelAndView();
+		
+		List<String> list = new ArrayList<String>();
+		list.add("test1");
+		list.add("test2");
+		list.add("test3");
+		
+		Set<String> set = new HashSet<>();
+		set.add("set-test1");
+		set.add("set-test2");
+		set.add("set-test3");
+		
+		mv.addObject("sets", set); // Set -> Object
+		
+		mv.addObject("lists", list);	// list -> Object
+		mv.addObject("ObjectTest", "테스트입니다");	
+		mv.addObject("name","홍길동");	// String -> Object
+		
+		mv.setViewName("view/MyView2");
+		
+		return mv;
+	}
+	
+	// 스프링 - String을 이용한 페이지이동과 Model을 이용한 객체 전달
+	@GetMapping("/mv3")
+	public String test5(Model model) {
+//		Model model = null or new 인터페이스라 이렇게 만들수가 없음 그래서 파라미터에 집어넣는 것
+		
+		List<String> list = new ArrayList<String>();
+		list.add("test1");
+		list.add("test2");
+		list.add("test3");
+		
+		Set<String> set = new HashSet<>();
+		set.add("set-test1");
+		set.add("set-test2");
+		set.add("set-test3");
+		
+		model.addAttribute("sets", set); // Set -> Object
+		
+		model.addAttribute("lists", list);	// list -> Object
+		model.addAttribute("ObjectTest", "테스트입니다");	
+		model.addAttribute("name","홍길동");	// String -> Object
+		
+		return "view/MyView2";
+	}
+	
+	@GetMapping("/members")
+	public String members(Model model) {
+		Member m1 = new Member(1, "홍길동", "광주시", 25);
+		Member m2 = new Member(2, "일지매", "서울시", 19);
+		Member m3 = new Member(3, "임꺽정", "대구시", 20);
+		
+		List<Member> list = new ArrayList<>();
+		list.add(m1);
+		list.add(m2);
+		list.add(m3);
+		
+		model.addAttribute("members", list);
+		
+		return "view/MyMembers";
+	}
+	
+	
+	
+	
 }
