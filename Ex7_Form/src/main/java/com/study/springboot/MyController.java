@@ -2,7 +2,9 @@ package com.study.springboot;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -53,4 +55,24 @@ public class MyController {
 		member.setPassword(password);
 		return member;
 	}
+	
+	// @Pathvariable 
+	@RequestMapping("/test3/{Id}/{name}")
+	public @ResponseBody Member getMember(@PathVariable("id") String id, @PathVariable("name") String name) {
+		return new Member(id, name);
+	}
+	
+	// 입력폼으로 forwarding처리
+	@RequestMapping(value = "/test4", method=RequestMethod.GET)
+	public String inputProc5() {
+		return "inputForm4";
+	}
+	
+	@RequestMapping("/test4Proc")
+	public @ResponseBody Member getInfo(Member member) {
+		return member;
+	}
+	
+	
+	
 }
