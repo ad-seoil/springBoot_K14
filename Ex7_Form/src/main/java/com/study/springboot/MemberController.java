@@ -43,6 +43,7 @@ public class MemberController {
 		model.addAttribute("id", id);
 		model.addAttribute("name", name);
 		
+		// view로 이동처리 = forward
 		return "test1";
 	}
 }
