@@ -24,7 +24,7 @@ public class SimpleBbsDao implements ISimpleBbsDao{
 //	}
 
 	@Override
-	public List<SimpleBbsDto> listDao()	{
+	public List<SimpleBbsDto> listDao() {
 		System.out.println("listDao()");
 		
 		String query = "select * from simple_bbs order by id desc";
@@ -36,26 +36,48 @@ public class SimpleBbsDao implements ISimpleBbsDao{
 	@Override
 	public SimpleBbsDto viewDao(String id) {
 		System.out.println("viewDao()");
-		
-		String query = "select * from simple_bbs where id = " + id;
-		SimpleBbsDto dto = template.queryForObject(query, new BeanPropertyRowMapper<SimpleBbsDto>(SimpleBbsDto.class));
+		//Statement
+		String query = "select * from simple_bbs where id="+id;
+		System.out.println("쿼리문:"+query);
+		SimpleBbsDto dto=template.queryForObject(query, new BeanPropertyRowMapper<SimpleBbsDto>(SimpleBbsDto.class));
 		return dto;
 	}
 
 	@Override
-	public int writeDao(final String writer, final String title, final String content) {
+	public int writeDao(String writer, String title, String content) {
 		System.out.println("writeDao()");
-		
-		String query = "insert intro simple_bbs (id, writer, title, content) " + 
-						"values (simple_bbs_seq.nextval, ?, ?, ?)";
-		return template.update(query, writer, title, content);
+		String query = "insert into simple_bbs(id, writer, title, content) "+ " values(simple_bbs_seq.nextval,?,?,?)";
+		//update()메소드 실행결과 값은 insert된 행의 수(1)
+		int result=template.update(query,writer, title, content );
+		return result;
 	}
 
 	@Override
-	public int deleteDao(final String id) {
+	public int deleteDao(String id) {
 		System.out.println("deleteDao()");
+		// PreparedStatement문
+		String query="delete simple_bbs where id = ?";
+		//wrapper클래스 Integer.parseInt(id) 역할: "3"(String) -> 3(int)
+		int result=template.update(query, Integer.parseInt(id) );
+		return result;
+	}
+
+	@Override
+	public int update(SimpleBbsDto dto) {
+		System.out.println("updateDao()");
+		// 1.update문으로 수정
+		String query = "update simple_bbs " + 
+						" set writer = ?, title =?, content =?"+
+						" where id = ?";
+		// 2. dto로부터 하나씩 끄집어내서 writer, title, content, id에 매핑
+		String writer = dto.getWriter();
+		String title = dto.getTitle();
+		String content = dto.getContent();
+		int id = dto.getId();
 		
-		String query = "delete from simple_bbs where id = ?";
-		return template.update(query, Integer.parseInt(id));
+		int result=template.update(query,writer, title, content, id);
+		System.out.println("결과 : " + result);
+		
+		return result;
 	}
 }

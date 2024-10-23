@@ -10,5 +10,6 @@ public interface ISimpleBbsDao {
 	public SimpleBbsDto viewDao(String id);
 	public int writeDao(String writer, String title, String content);
 	public int deleteDao(String id);
+	public int update(SimpleBbsDto dto);
 	
 }
