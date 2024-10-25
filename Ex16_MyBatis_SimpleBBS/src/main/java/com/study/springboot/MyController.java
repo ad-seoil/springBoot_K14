@@ -39,11 +39,21 @@ public class MyController {
 	
 	//bbs상세보기  
 	@RequestMapping("/view")
-	public String view(HttpServletRequest request, Model model){
-		String sId = request.getParameter("id");//"2"
-		SimpleBbsDto dto = dao.viewDao(sId);
-		model.addAttribute("dto", dto);
-		return "view";
+	public void view(
+//		 HttpServletRequest request, Model model
+			SimpleBbsDto dto, Model model
+//		@RequestParam("id") String sId를 사용하면 밑의 String sId=...이라고 해줄필요가 없다
+// 		@ModelAttribute("dto")로 선언하는 경우, view로 객체가 전달은 되지만 메소드 내부에서 값이 setting되는 과정 없이 전달됨
+			){
+//		String sId = request.getParameter("id");//"2"
+//		SimpleBbsDto dto = dao.viewDao(sId);
+		
+		dto = dao.viewDao(Integer.toString(dto.getId()));
+		
+		model.addAttribute("dto", dto);	// 전달객체 전달
+		
+		// return "view";
+		
 	}
 	
 	@RequestMapping("/update/{id}")
