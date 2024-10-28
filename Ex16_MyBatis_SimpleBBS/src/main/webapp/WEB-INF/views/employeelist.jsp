@@ -20,7 +20,7 @@
 <c:forEach var="emp" items="${employees}" varStatus="st">
  <tr>
    <td>${st.count}</td> 
-   <td> ${emp.empno} </td>
+   <td><a href="/employee/${emp.empno}">${emp.empno}</a></td>
    <td> ${emp.ename1} </td>
    <td>${emp.job}</td>
    <td> ${emp.dname1} </td>

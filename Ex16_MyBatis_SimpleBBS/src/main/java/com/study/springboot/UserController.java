@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.study.springboot.dao.IDao;
@@ -27,4 +29,14 @@ public class UserController {
 		return "employeelist";
 	}
 	
+	@GetMapping("/employee/{empno}")
+	public String empInfo(@PathVariable("empno") String empno, Model model) {
+		System.out.println("empno : " + empno);
+		// dao로 empno에 해당하는 정보를 요청
+		UserDto emp = dao.getEmpInfo(empno);
+		
+		System.out.println("empInfo : " + emp);
+		model.addAttribute("empInfo", emp);
+		return "employee";
+	}
 }
