@@ -22,5 +22,7 @@ public interface ISimpleBbsDao {
 	public int deleteDao(String id);
 	public int update(SimpleBbsDto dto);
 	public int writeDao2(Map<String, String> map);
+	// 전체 조회 건수리턴
+	public int articleCount();
 	
 }

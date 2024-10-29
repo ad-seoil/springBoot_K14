@@ -16,15 +16,24 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.study.springboot.dao.ISimpleBbsDao;
 import com.study.springboot.dto.SimpleBbsDto;
+import com.study.springboot.service.ISimpleBbsService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class MyController {
 
-	@Autowired
-	private ISimpleBbsDao dao;
+//	@Autowired
+//	private ISimpleBbsDao dao;
 	
+	private final ISimpleBbsService service;
+	
+	// 요새는  autowired보다 final로 생성자를 만들어서 쓰는걸 권장함
+	public MyController(ISimpleBbsService service) {
+		super();
+		this.service = service;
+	}
+
 	@RequestMapping("/")
 	public String root() throws Exception {
 		return "redirect:/list";	// 다른 페이지로 보내기 redirect
@@ -34,8 +43,10 @@ public class MyController {
 	@RequestMapping("/list")
 	public String userlistPage(Model model){
 		List<SimpleBbsDto> list=new ArrayList<>();
-		list = dao.listDao();//요청을 dao에게 넘김
+		list = service.list();//요청을 dao에게 넘김
 		model.addAttribute("list", list);//모델에 저장
+		int nTotalCount = service.count();
+		model.addAttribute("count", nTotalCount);
 		return "list"; //forward
 	}
 	
@@ -50,7 +61,7 @@ public class MyController {
 //		String sId = request.getParameter("id");//"2"
 //		SimpleBbsDto dto = dao.viewDao(sId);
 		
-		dto = dao.viewDao(Integer.toString(dto.getId()));
+		dto = service.view(Integer.toString(dto.getId()));
 		
 		model.addAttribute("dto", dto);	// 전달객체 전달
 		
@@ -61,7 +72,7 @@ public class MyController {
 	@RequestMapping("/update/{id}")
 	public String updateForm(@PathVariable("id") String id, Model model) {
 		System.out.println("id : " + id);
-		SimpleBbsDto dto = dao.viewDao(id);
+		SimpleBbsDto dto = service.view(id);
 		System.out.println("조회결과: " + dto);
 		model.addAttribute("dto", dto);
 		
@@ -70,7 +81,7 @@ public class MyController {
 	
 	@RequestMapping(value="/update", method=RequestMethod.POST)
 	public String updateForm(@ModelAttribute SimpleBbsDto dto) {
-		int result = dao.update(dto);
+		int result = service.update(dto);
 		
 		return "redirect:/list";
 	}
@@ -91,6 +102,8 @@ public class MyController {
 		map.put("title", title);
 		map.put("content", content);
 		
+		int result = service.write(map);
+		
 //		dao.writeDao(writer, title, content);
 			
 			return "redirect:/list";
@@ -100,7 +113,7 @@ public class MyController {
 	@RequestMapping("/delete")
 	public String delete(HttpServletRequest request){
 		String id = request.getParameter("id"); 
-		int result=dao.deleteDao(id);
+		int result = service.delete(id);
 		System.out.println("삭제된행 수: "+result);
 		return "redirect:/list";
 	}

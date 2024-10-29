@@ -20,12 +20,12 @@
     
     <insert id="writeDao2">
         insert into simple_bbs(id, writer, title, content)
-        	values(simple_bbs_seq.nextval, #{0}, #{1}, #{2})
+        	values(simple_bbs_seq.nextval, #{writer}, #{title}, #{content})
     </insert>
     
     <insert id="writeDao3">
         insert into simple_bbs(id, writer, title, content)
-        	values(simple_bbs_seq.nextval, #{0}, #{1}, #{2})
+        	values(simple_bbs_seq.nextval, #{writer}, #{title}, #{content})
     </insert>
     
     <delete id="deleteDao">
@@ -37,5 +37,10 @@
 			set writer = #{writer}, title = #{title}, content = #{content}
 			where id = #{id}
     </update>
+    
+    <select id="articleCount" resultType="int">
+    	select count(*) from simple_bbs
+    </select>
+    
     
 </mapper>
