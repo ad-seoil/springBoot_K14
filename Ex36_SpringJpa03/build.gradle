@@ -13,12 +13,10 @@ java {
 		languageVersion = JavaLanguageVersion.of(17)
 	}
 }
-
 eclipse.wtp.facet {
     // Change the version of the Dynamic Web Module facet
     facet name: 'jst.web', version: '5.0'
 }
-
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
@@ -35,18 +33,18 @@ dependencies {
 	implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl'
 	implementation 'org.glassfish:jakarta.el:4.0.2'
 	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
-
+	
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	// runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
+	runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
 	annotationProcessor 'org.projectlombok:lombok'
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    runtimeOnly 'com.mysql:mysql-connector-j'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	
+	runtimeOnly 'com.mysql:mysql-connector-j'
 }
 
 tasks.named('test') {
