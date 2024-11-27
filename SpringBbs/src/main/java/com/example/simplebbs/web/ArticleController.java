@@ -1,5 +1,7 @@
 package com.example.simplebbs.web;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -7,30 +9,44 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.simplebbs.article.Article;
+import com.example.simplebbs.article.ArticleService;
 
 @Controller
 public class ArticleController {
-	@GetMapping("/")
-	public @ResponseBody String root() {
-		return "hello world";
-	}
+	private final ArticleService articleService;
 	
-	@GetMapping("/write")
-	public String writePate(Model model) {
-		model.addAttribute("articleInput", new ArticleInput());
-		return "write";// resource/templates/write.html
+    public ArticleController(ArticleService articleService) {
+		this.articleService = articleService;
 	}
 
-	@PostMapping("/write")
-	public String submitForm(@Validated @ModelAttribute("articleInput") ArticleInput articleInput, BindingResult bindingResult) {
-		System.out.println("article : " + articleInput);
-		if (bindingResult.hasErrors()) {
-			return "write";	// 입력폼으로 되돌아감
-		}
-		// 서비스 호출
-		return "redirect:/";
-	}
+	@GetMapping("/write")
+    public String writePage(Model model) {
+        model.addAttribute("articleInput", new ArticleInput());
+        return "write";
+    }
+
+    @PostMapping("/write")
+    public String submitForm(@Validated @ModelAttribute ArticleInput articleInput,
+                        BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "write";
+        }
+
+        // ArticleService의 writeArticle 메소드 호출
+        articleService.writeArticle(articleInput.getSubject(), articleInput.getContent(), articleInput.getAuthor());
+         
+        return "redirect:/";
+    }
+
+    @GetMapping("/")
+    public String list(Model model) {
+       List<Article> articles 
+          = articleService.getAllArticles();
+       model.addAttribute("articles", articles);
+        return "list";//list.html
+    }
+
+   
 }
