@@ -12,10 +12,8 @@ import org.springframework.security.web.SecurityFilterChain;
 /**
  * 시큐리티 환경설정
  */
-// 환경설정 처리
-@Configuration
-// security 기능활성화
-@EnableWebSecurity
+@Configuration //환경설정 처리
+@EnableWebSecurity//security 기능활성화
 public class WebSecurityConfig {
     //로그인 없이 접근 가능 경로
     private static final String[] PUBLIC_URLS = {
@@ -30,26 +28,26 @@ public class WebSecurityConfig {
     protected SecurityFilterChain config(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(author -> author
-                .requestMatchers(PUBLIC_URLS).permitAll() // 접근허용url
-                .anyRequest().authenticated()	// 접근허용url외에는 인증을 거쳐야함
+                .requestMatchers(PUBLIC_URLS).permitAll()//접근허용url
+                .anyRequest().authenticated()//접근허용url외는 인증거쳐야함
             )
             .httpBasic(Customizer.withDefaults())
             .formLogin(formLogin -> formLogin
-                    .loginPage("/member/loginForm") // 로그인 폼페이지
-                    .usernameParameter("id")		// loginForm의 id쪽 name이 같아야함
+                    .loginPage("/member/loginForm")//로그인 폼페이지
+                    .usernameParameter("id")
                     .passwordParameter("password")
-                    .loginProcessingUrl("/member/login")	// 로그인 처리페이지
-                    .defaultSuccessUrl("/", true)	// 로그인성공 후 이동할 페이지
+                    .loginProcessingUrl("/member/login")//로그인 처리페이지
+                    .defaultSuccessUrl("/", true)//로그인성공 후 이동할 페이지 
                     .permitAll()
             )
             .logout(logout -> logout
-                    .logoutUrl("/member/logout") // 로그 아웃처리 url
-                    .logoutSuccessUrl("/") // 로그아웃 성공후 이동할 페이지
+                    .logoutUrl("/member/logout")//로그 아웃처리 url
+                    .logoutSuccessUrl("/")//로그아웃 성공후 이동할 페이지
             );
 
-        http // 아래 2개는 기본적으로 스프링 시큐리티와 같이 못씀 그래서 disable해둔 상태
-            .cors(AbstractHttpConfigurer::disable)	// 스프링시큐리티와 같이 못씀
-            .csrf(AbstractHttpConfigurer::disable);	// 스프링시큐리티와 같이 못씀
+        http
+            .cors(AbstractHttpConfigurer::disable)//스프링시큐리티와 같이못씀
+            .csrf(AbstractHttpConfigurer::disable);//스프링시큐리티와 같이못씀
 
         return http.build();
     }

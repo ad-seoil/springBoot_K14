@@ -12,13 +12,22 @@ import lombok.NoArgsConstructor;
 /**
  * 회원정보 DTO
  */
-@Builder
-@Data
-@NoArgsConstructor // default생성자
-@AllArgsConstructor	// 매개변수있는 생성자
+@Builder//매개변수있는 생성자 만드는 메소드
+@Data//getters/setters/toString
+@NoArgsConstructor//기본생성자
+@AllArgsConstructor//매개변수있는 생성자
 public class MemberDTO {
-	String memberId;
-	String memberPw;
-	String memberName;
-	String phone;
+	 //사용자 아이디
+    String memberId;
+
+    //비밀번호
+    String memberPw;
+
+    //사용자 이름
+    String memberName;
+
+    //전화번호
+    String phone;
+
+
 }
